@@ -1,0 +1,34 @@
+{
+    "name": "moduvel/moduvel-tmp",
+    "description": "Moduvel Temporary Package",
+    "keywords": ["framework", "laravel"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ahmedul Haque Abid",
+            "email": "a_h_abid@hotmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/support": "^5.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5",
+        "orchestra/testbench": "^3.5"
+    },
+    "autoload": {
+        "files": [
+            "helpers/locale_helpers.php"
+        ],
+        "psr-4": {
+            "Moduvel\\Core\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Moduvel\\Core\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable"
+}
