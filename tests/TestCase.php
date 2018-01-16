@@ -2,23 +2,17 @@
 
 namespace Moduvel\Core\Tests;
 
-use Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider;
 use Moduvel\Core\Providers\CoreServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Orchestra\Testbench\Traits\WithFactories;
 
 class TestCase extends OrchestraTestCase
 {
-    use WithFactories;
-
     /**
      * Setup the test environment.
      */
     protected function setUp()
     {
         parent::setUp();
-
-        $this->withFactories(__DIR__.'/../database/factories');
     }
 
     /**

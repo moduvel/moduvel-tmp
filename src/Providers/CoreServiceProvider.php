@@ -3,6 +3,7 @@
 namespace Moduvel\Core\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Factory as ModelFactory;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,8 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->app->register(AuthServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+
+        $this->app->make(ModelFactory::class)->load(__DIR__.'/../../database/factories');
 
         // $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         // $loader->alias('LaravelLocalization',\Mcamara\LaravelLocalization\Facades\LaravelLocalization::class);
