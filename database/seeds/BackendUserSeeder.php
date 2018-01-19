@@ -3,6 +3,7 @@
 namespace Moduvel\Core\Database\Seeds;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Moduvel\Core\Entities\BackendUser;
 
 class BackendUserSeeder extends Seeder
