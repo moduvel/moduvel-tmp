@@ -17,7 +17,7 @@
         <ul>
             @foreach (locales_info() as $locale_key => $locale)
             <li>
-                <a href="{{ locale_current_route($locale_key) }}">{{ $locale['native'] }}</a>
+                <a href="{{ localize_current_route($locale_key) }}">{{ $locale['native'] }}</a>
             </li>
             @endforeach
         </ul>

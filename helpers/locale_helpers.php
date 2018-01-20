@@ -20,9 +20,13 @@ function locales_info()
     return config('moduvel-locales.supportedLocales');
 }
 
-function locale_route($route)
+function locale_route($name, $parameters = [], $locale = null)
 {
-    return route(locale().'.'.$route);
+    if ($locale == null) {
+        $locale = locale();
+    }
+
+    return route($locale.'.'.$name, $parameters, true);
 }
 
 function locale_direction($locale = null)
@@ -36,7 +40,10 @@ function locale_direction($locale = null)
     return $locales[$locale]['direction'];
 }
 
-function locale_current_route($locale)
+function localize_current_route($locale)
 {
-    return route($locale . substr(\Route::currentRouteName(), 2));
+    $name = substr(\Route::currentRouteName(), 3);
+    $parameters = request()->route()->parameters();
+
+    return locale_route($name, $parameters, $locale);
 }
