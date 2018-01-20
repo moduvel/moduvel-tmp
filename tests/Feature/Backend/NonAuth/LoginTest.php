@@ -11,11 +11,11 @@ class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_can_see_login_page()
+    public function test_it_can_see_login_page_in_default_locale()
     {
         $this->withoutExceptionHandling();
 
-        $this->get(route('en.backend.login'))
+        $this->get(locale_route('backend.login'))
             ->assertSee('Login')
             ->assertSee('</button>')
             ->assertSee('</form>');
@@ -36,17 +36,17 @@ class LoginTest extends TestCase
     public function test_invalid_login_will_show_error_message()
     {
         $this->withHeaders([
-                'HTTP_REFERER' => route('en.backend.login'),
+                'HTTP_REFERER' => locale_route('backend.login'),
             ])
             ->followingRedirects()
-            ->post(route('en.backend.login'))
+            ->post(locale_route('backend.login'))
             ->assertSee('Invalid Credentials');
 
         $this->withHeaders([
-                'HTTP_REFERER' => route('en.backend.login'),
+                'HTTP_REFERER' => locale_route('backend.login'),
             ])
             ->followingRedirects()
-            ->post(route('en.backend.login'), [
+            ->post(locale_route('backend.login'), [
                 'email' => 'invalid',
                 'password' => 'invalid',
             ])
@@ -61,10 +61,10 @@ class LoginTest extends TestCase
         ]);
 
         $this->withHeaders([
-                'HTTP_REFERER' => route('en.backend.login'),
+                'HTTP_REFERER' => locale_route('backend.login'),
             ])
             ->followingRedirects()
-            ->post(route('en.backend.login'), [
+            ->post(locale_route('backend.login'), [
                 'email' => 'admin@mail.com',
                 'password' => '123456',
             ])

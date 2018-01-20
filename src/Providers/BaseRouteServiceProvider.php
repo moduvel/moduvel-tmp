@@ -5,7 +5,7 @@ namespace Moduvel\Core\Providers;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Moduvel\Core\Http\Middlewares\CheckLocalization;
-// use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Moduvel\Core\Http\Middlewares\BackendAuthenticate;
 
 abstract class BaseRouteServiceProvider extends ServiceProvider
 {
@@ -27,6 +27,7 @@ abstract class BaseRouteServiceProvider extends ServiceProvider
                 'namespace' => $this->namespace . '\Backend',
                 'middleware' => [
                     'web',
+                    BackendAuthenticate::class,
                     CheckLocalization::class,
                 ],
             ], function($router) use ($locale) {

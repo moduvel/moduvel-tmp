@@ -3,6 +3,8 @@
 namespace Moduvel\Core\Providers;
 
 use Illuminate\Routing\Router;
+use Moduvel\Core\Http\Middlewares\CheckLocalization;
+use Moduvel\Core\Http\Middlewares\RedirectIfAuthenticated;
 
 class RouteServiceProvider extends BaseRouteServiceProvider
 {
@@ -12,11 +14,32 @@ class RouteServiceProvider extends BaseRouteServiceProvider
     {
         parent::boot($router);
 
+        // Guest Backend Routes
+        $this->loadBackendGuestRoutes($router);
+
         // Root Backend Route Redirection
         $router->redirect('/'.config('moduvel-core.backend-segment-name'), locale().'/'.config('moduvel-core.backend-segment-name'));
 
         // Root Frontend Route Redirection
         $router->redirect('/', locale().'/');
+    }
+
+    protected function loadBackendGuestRoutes($router)
+    {
+        foreach (locales() as $locale) {
+            // Backend Routes
+            $router->group([
+                'prefix' => $locale.'/'.config('moduvel-core.backend-segment-name'),
+                'namespace' => $this->namespace . '\Backend',
+                'middleware' => [
+                    'web',
+                    RedirectIfAuthenticated::class,
+                    CheckLocalization::class,
+                ],
+            ], function($router) use ($locale) {
+                include __DIR__.'/../../routes/backend-guest.php';
+            });
+        }
     }
 
     protected function getBackendRoutes()
