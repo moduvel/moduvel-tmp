@@ -26,20 +26,17 @@ class RouteServiceProvider extends BaseRouteServiceProvider
 
     protected function loadBackendGuestRoutes($router)
     {
-        foreach (locales() as $locale) {
-            // Backend Routes
-            $router->group([
-                'prefix' => $locale.'/'.config('moduvel-core.backend-segment-name'),
-                'namespace' => $this->namespace . '\Backend',
-                'middleware' => [
-                    'web',
-                    RedirectIfAuthenticated::class,
-                    CheckLocalization::class,
-                ],
-            ], function($router) use ($locale) {
-                include __DIR__.'/../../routes/backend-guest.php';
-            });
-        }
+        $router->group([
+            'prefix' => '{locale}/'.config('moduvel-core.backend-segment-name'),
+            'namespace' => $this->namespace . '\Backend',
+            'middleware' => [
+                'web',
+                RedirectIfAuthenticated::class,
+                CheckLocalization::class,
+            ],
+        ], function($router) {
+            require __DIR__.'/../../routes/backend-guest.php';
+        });
     }
 
     protected function getBackendRoutes()

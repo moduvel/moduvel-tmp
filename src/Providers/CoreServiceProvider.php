@@ -7,15 +7,10 @@ use Illuminate\Database\Eloquent\Factory as ModelFactory;
 
 class CoreServiceProvider extends ServiceProvider
 {
-    protected $defer = false;
-
 	public function register()
 	{
         $this->mergeConfigFrom(__DIR__.'/../../config/moduvel-core.php', 'moduvel-core');
         $this->mergeConfigFrom(__DIR__.'/../../config/moduvel-locales.php', 'moduvel-locales');
-
-        $this->app->register(AuthServiceProvider::class);
-        $this->app->register(RouteServiceProvider::class);
 
         $this->app->make(ModelFactory::class)->load(__DIR__.'/../../database/factories');
 
@@ -39,9 +34,4 @@ class CoreServiceProvider extends ServiceProvider
         // // Themes
         // $this->publishes([__DIR__ . '/../resources/themes/'.config('abdcms-lv.theme').'/assets/dist' => public_path('themes/'.config('abdcms-lv.theme').'/app')], 'assets');
 	}
-
-    public function provides()
-    {
-        return [];
-    }
 }

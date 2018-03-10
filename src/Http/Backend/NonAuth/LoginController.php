@@ -24,7 +24,7 @@ class LoginController extends Controller
         }
 
         return $request->expectsJson()
-                ? response()->json(['redirect' => locale().'.backend.dashboard'], Response::HTTP_ACCEPTED)
-                : redirect()->route(locale().'.backend.dashboard');
+                ? response()->json(['redirect' =>  locale_route('backend.dashboard')], Response::HTTP_ACCEPTED)
+                : locale_route_redirect('backend.dashboard');
     }
 }

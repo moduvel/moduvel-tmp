@@ -11,33 +11,28 @@ abstract class BaseRouteServiceProvider extends ServiceProvider
 {
     protected $namespace = '';
 
-    protected $defer = false;
-
-    public function register()
-    {
-        //
-    }
-
     public function boot(Router $router)
     {
-        foreach (locales() as $locale) {
-            // Backend Routes
-            $router->group([
-                'prefix' => $locale.'/'.config('moduvel-core.backend-segment-name'),
-                'namespace' => $this->namespace . '\Backend',
-                'middleware' => [
-                    'web',
-                    BackendAuthenticate::class,
-                    CheckLocalization::class,
-                ],
-            ], function($router) use ($locale) {
-                include $this->getBackendRoutes();
-            });
-        }
-    }
+        static $bootedOnce = false;
 
-    public function provides()
-    {
-        return [];
+        if ( ! $bootedOnce) {
+            // Set Locale Pattern to use in the system
+            $router->pattern('locale', '(' . implode('|', locales()) . ')');
+
+            $bootedOnce = true;
+        }
+
+        // Backend Routes
+        $router->group([
+            'prefix' => '{locale}/'.config('moduvel-core.backend-segment-name'),
+            'namespace' => $this->namespace . '\Backend',
+            'middleware' => [
+                'web',
+                BackendAuthenticate::class,
+                CheckLocalization::class,
+            ],
+        ], function($router) {
+            require $this->getBackendRoutes();
+        });
     }
 }

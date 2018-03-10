@@ -10,6 +10,6 @@ class LogoutController extends Controller
     {
         \Auth::guard('backend')->logout();
 
-        return redirect()->route(locale().'.backend.login');
+        return locale_route_redirect('backend.login');
     }
 }

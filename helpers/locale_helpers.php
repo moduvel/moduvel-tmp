@@ -1,13 +1,31 @@
 <?php
 
-function locale()
+use Moduvel\Core\Exceptions\UnsupportedLocaleException;
+
+function locale($locale = null)
 {
-    return app()->getLocale();
+    if (empty($locale)) {
+        return app()->getLocale();
+    }
+
+    if ( ! in_array($locale, locales())) {
+        throw new UnsupportedLocaleException("The locale value '{$locale}' is not supported in this app.");
+    }
+
+    return app()->setLocale($locale);
 }
 
-function locale_info()
+function locale_info($locale = null)
 {
-    return config('moduvel-locales.supportedLocales')[locale()];
+    if (empty($locale)) {
+        $locale = locale();
+    }
+
+    if ( ! in_array($locale, locales())) {
+        throw new UnsupportedLocaleException("The locale value '{$locale}' is not supported in this app.");
+    }
+
+    return config('moduvel-locales.supportedLocales')[$locale];
 }
 
 function locales()
@@ -22,28 +40,28 @@ function locales_info()
 
 function locale_route($name, $parameters = [], $locale = null)
 {
-    if ($locale == null) {
+    if (empty($locale)) {
         $locale = locale();
     }
 
-    return route($locale.'.'.$name, $parameters, true);
-}
-
-function locale_direction($locale = null)
-{
-    if ($locale == null) {
-        $locale = locale();
+    if ( ! in_array($locale, locales())) {
+        throw new UnsupportedLocaleException("The locale value '{$locale}' is not supported in this app.");
     }
 
-    $locales = config('moduvel-locales.supportedLocales');
+    $parameters['locale'] = $locale;
 
-    return $locales[$locale]['direction'];
+    return route($name, $parameters, true);
 }
 
 function localize_current_route($locale)
 {
-    $name = substr(\Route::currentRouteName(), 3);
+    $name = \Route::currentRouteName();
     $parameters = request()->route()->parameters();
 
     return locale_route($name, $parameters, $locale);
+}
+
+function locale_route_redirect($name, $parameters = [], $locale = null)
+{
+    return \Redirect::to(locale_route($name, $parameters, $locale));
 }
